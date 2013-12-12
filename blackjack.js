@@ -38,7 +38,7 @@ dealer.on('stay', function () {
   console.log("dealer stays.");
 });
 
-player.on('turn', function () {
+player.on('turn', function (fn) {
   console.log("Your turn.");
 
   console.log("your cards: "+player.cards.map(function (card) {
@@ -52,8 +52,8 @@ player.on('turn', function () {
   console.log("would you like to (h)it or (s)tay?");
 
   getCommand(function (input) {
-    if(input === 'h' || input === 'hit') return player.hit();
-    if(input === 's' || input === 'stay') return player.stay();
+    if(input === 'h' || input === 'hit') return player.hit(fn);
+    if(input === 's' || input === 'stay') return player.stay(fn);
   });
 
 });
