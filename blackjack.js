@@ -24,7 +24,7 @@ function playGame() {
 
   dealer.on('turn', function () {
     console.log("Dealer's turn.");
-    console.log(dealer.cardString(true));
+    console.log(dealer.cardString());
   });
 
   dealer.on('hit', function () {
@@ -75,7 +75,7 @@ function playGame() {
     }
 
     console.log("your cards: "+player.cardString());
-    console.log("dealer cards: "+dealer.cardString(true));
+    console.log("dealer cards: "+dealer.cardString());
 
     console.log("\nPlay again? (y/n)");
 
