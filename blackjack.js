@@ -35,6 +35,10 @@ function playGame() {
     console.log("dealer stays.");
   });
 
+  dealer.on('bust', function () {
+    console.log("dealer busted!");
+  });
+
   player.on('turn', function (fn) {
     console.log("Your turn.");
 
@@ -59,12 +63,17 @@ function playGame() {
     console.log("you stay.");
   });
 
+  player.on('bust', function () {
+    console.log("you busted!");
+  });
+
   player.on('end', function () {
     if(player.won) {
-      return console.log("You won!");
+      console.log("You won!");
+    } else {
+      console.log("You lost.");
     }
 
-    console.log("You lost.");
     console.log("your cards: "+player.cardString());
     console.log("dealer cards: "+dealer.cardString());
 
