@@ -17,14 +17,14 @@ function playGame() {
     game.players.forEach(function (_player, i) {
       var name = i ? "Player "+i : "Dealer";
 
-      console.log(name + ": " + _player.cardString(i > 1));
+      console.log(name + ": " + _player.cardString(i === 0));
     });
     console.log("");
   });
 
   dealer.on('turn', function () {
     console.log("Dealer's turn.");
-    console.log(dealer.cardString());
+    console.log(dealer.cardString(true));
   });
 
   dealer.on('hit', function () {
@@ -44,7 +44,7 @@ function playGame() {
 
     console.log("your cards: "+player.cardString());
 
-    console.log("dealers cards: "+dealer.cardString());
+    console.log("dealers cards: "+dealer.cardString(true));
 
     console.log("would you like to (h)it or (s)tay?");
 
@@ -75,7 +75,7 @@ function playGame() {
     }
 
     console.log("your cards: "+player.cardString());
-    console.log("dealer cards: "+dealer.cardString());
+    console.log("dealer cards: "+dealer.cardString(true));
 
     console.log("\nPlay again? (y/n)");
 
