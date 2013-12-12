@@ -15,19 +15,14 @@ game.on('deal', function() {
   game.players.forEach(function (_player, i) {
     var name = i ? "Player "+i : "Dealer";
 
-    var cards = _player.cards.map(function (card, n) {
-      if(!i || i === 1 || n) return card.card;
-      return "Facedown";
-    }).join(' ');
-
-    console.log(name + ": " + cards);
+    console.log(name + ": " + _player.cardString(i > 1));
   });
-
-  console.log("\n");
+  console.log("");
 });
 
 dealer.on('turn', function () {
   console.log("Dealer's turn.");
+  console.log(dealer.cardString());
 });
 
 dealer.on('hit', function () {
@@ -41,21 +36,25 @@ dealer.on('stay', function () {
 player.on('turn', function (fn) {
   console.log("Your turn.");
 
-  console.log("your cards: "+player.cards.map(function (card) {
-    return card.card;
-  }).join(' '));
+  console.log("your cards: "+player.cardString());
 
-  console.log("dealers cards: "+dealer.cards.map(function (card) {
-    return card.card;
-  }).join(' '));
+  console.log("dealers cards: "+dealer.cardString());
 
   console.log("would you like to (h)it or (s)tay?");
 
   getCommand(function (input) {
+    input = input.trim();
     if(input === 'h' || input === 'hit') return player.hit(fn);
     if(input === 's' || input === 'stay') return player.stay(fn);
   });
 
+});
+
+player.on('hit', function () {
+  console.log("you hit.");
+});
+player.on('stay', function () {
+  console.log("you stay.");
 });
 
 player.on('end', function () {
@@ -77,14 +76,7 @@ function getCommand(fn) {
   process.stdin.resume();
   process.stdin.setEncoding('utf8');
 
-  var input = ""
-
   process.stdin.on('data', function(chunk) {
-    input += chunk;
-  });
-
-  process.stdin.on('end', function() {
-    fn(input);
-    process.stdin.pause();
+    fn(chunk);
   });
 }
