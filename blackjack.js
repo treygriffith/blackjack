@@ -12,11 +12,11 @@ var game = new Game(2)
 game.on('deal', function() {
   console.log("cards dealt");
 
-  game.players.forEach(function (player, i) {
-    var name = i || "Dealer";
+  game.players.forEach(function (_player, i) {
+    var name = i ? "Player "+i : "Dealer";
 
-    var cards = player.cards.map(function (card, n) {
-      if(!i || n) return card.card;
+    var cards = _player.cards.map(function (card, n) {
+      if(!i || i === 1 || n) return card.card;
       return "Facedown";
     }).join(' ');
 
@@ -30,6 +30,13 @@ dealer.on('turn', function () {
   console.log("Dealer's turn.");
 });
 
+dealer.on('hit', function () {
+  console.log("dealer hits.");
+});
+
+dealer.on('stay', function () {
+  console.log("dealer stays.");
+});
 
 player.on('turn', function () {
   console.log("Your turn.");
@@ -49,6 +56,14 @@ player.on('turn', function () {
     if(input === 's' || input === 'stay') return player.stay();
   });
 
+});
+
+player.on('end', function () {
+  if(player.won) {
+    return console.log("You won!");
+  }
+
+  console.log("You lost.");
 });
 
 
