@@ -91,7 +91,7 @@ function getCommand(fn) {
   process.stdin.resume();
   process.stdin.setEncoding('utf8');
 
-  process.stdin.on('data', function(chunk) {
+  process.stdin.once('data', function(chunk) {
     fn(chunk);
   });
 }
