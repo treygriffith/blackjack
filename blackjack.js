@@ -4,69 +4,84 @@
 
 var Game = require('./lib/game');
 
-var game = new Game(2)
-  , dealer = game.players[0]
-  , player = game.players[1];
+function playGame() { 
+
+  var game = new Game(2)
+    , dealer = game.players[0]
+    , player = game.players[1];
 
 
-game.on('deal', function() {
-  console.log("cards dealt");
+  game.on('deal', function() {
+    console.log("cards dealt");
 
-  game.players.forEach(function (_player, i) {
-    var name = i ? "Player "+i : "Dealer";
+    game.players.forEach(function (_player, i) {
+      var name = i ? "Player "+i : "Dealer";
 
-    console.log(name + ": " + _player.cardString(i > 1));
-  });
-  console.log("");
-});
-
-dealer.on('turn', function () {
-  console.log("Dealer's turn.");
-  console.log(dealer.cardString());
-});
-
-dealer.on('hit', function () {
-  console.log("dealer hits.");
-});
-
-dealer.on('stay', function () {
-  console.log("dealer stays.");
-});
-
-player.on('turn', function (fn) {
-  console.log("Your turn.");
-
-  console.log("your cards: "+player.cardString());
-
-  console.log("dealers cards: "+dealer.cardString());
-
-  console.log("would you like to (h)it or (s)tay?");
-
-  getCommand(function (input) {
-    input = input.trim();
-    if(input === 'h' || input === 'hit') return player.hit(fn);
-    if(input === 's' || input === 'stay') return player.stay(fn);
+      console.log(name + ": " + _player.cardString(i > 1));
+    });
+    console.log("");
   });
 
-});
+  dealer.on('turn', function () {
+    console.log("Dealer's turn.");
+    console.log(dealer.cardString());
+  });
 
-player.on('hit', function () {
-  console.log("you hit.");
-});
-player.on('stay', function () {
-  console.log("you stay.");
-});
+  dealer.on('hit', function () {
+    console.log("dealer hits.");
+  });
 
-player.on('end', function () {
-  if(player.won) {
-    return console.log("You won!");
-  }
+  dealer.on('stay', function () {
+    console.log("dealer stays.");
+  });
 
-  console.log("You lost.");
-});
+  player.on('turn', function (fn) {
+    console.log("Your turn.");
+
+    console.log("your cards: "+player.cardString());
+
+    console.log("dealers cards: "+dealer.cardString());
+
+    console.log("would you like to (h)it or (s)tay?");
+
+    getCommand(function (input) {
+      input = input.trim();
+      if(input === 'h' || input === 'hit') return player.hit(fn);
+      if(input === 's' || input === 'stay') return player.stay(fn);
+    });
+
+  });
+
+  player.on('hit', function () {
+    console.log("you hit.");
+  });
+  player.on('stay', function () {
+    console.log("you stay.");
+  });
+
+  player.on('end', function () {
+    if(player.won) {
+      return console.log("You won!");
+    }
+
+    console.log("You lost.");
+    console.log("your cards: "+player.cardString());
+    console.log("dealer cards: "+dealer.cardString());
+
+    console.log("\nPlay again? (y/n)");
+
+    getCommand(function (input) {
+      input = input.trim();
+      if(input === 'y') return playGame();
+      process.exit();
+    });
+  });
 
 
-game.start();
+  game.start();
+}
+
+playGame();
 
 
 
